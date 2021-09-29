@@ -1,9 +1,9 @@
 //
 //  CollapsibleTableViewHeader.swift
-//  FirstOneFree
+//  
 //
 //  Created by Arjun Gopakumar on 29/04/19.
-//  Copyright © 2019 Reubro International. All rights reserved.
+//
 //
 
 

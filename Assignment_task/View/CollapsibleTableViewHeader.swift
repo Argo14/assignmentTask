@@ -20,7 +20,6 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     var section: Int = 0
     
     let titleLabel = UILabel()
-    let arrowLabel = UILabel()
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)

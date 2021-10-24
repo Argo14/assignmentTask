@@ -8,11 +8,8 @@
 import UIKit
 import SDWebImage
 
-
-class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate {
-    
-    
-
+class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate, UpdateTableView {
+ 
     @IBOutlet weak var candidateTableView: UITableView!
     @IBOutlet weak var offlineView: UIView!
     @IBOutlet weak var offlineViewLabel: UILabel!
@@ -22,6 +19,7 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate 
     var data : [canidateSections] = []
     var tempDict : [CandidateData] = []
     var refreshControl = UIRefreshControl()
+    var sectionrefresh : Int?
    
 
     override func viewDidLoad() {
@@ -34,7 +32,21 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate 
         refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         candidateTableView.addSubview(refreshControl)
         candidateTableView.tableFooterView = UIView()
+        candidateTableView.estimatedRowHeight = 100
+        candidateTableView.rowHeight = UITableView.automaticDimension
+        
     }
+    
+    func updateTableViewHeight() {
+      
+        self.candidateTableView.beginUpdates()
+        if sectionrefresh != data.count - 1{
+        self.candidateTableView.reloadSections([data.count - 1], with: .automatic)
+        }
+        self.candidateTableView.endUpdates()
+    }
+    
+  
     //refresh control
     @objc func refresh(sender:AnyObject) {
         self.data.removeAll()
@@ -51,21 +63,15 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate 
             self.updateDataSource()
         }
     }
+    
+  
   
     // for updating the datasource
+    // new - moved the business logic to the canididateview model and gets the data through data binding. Studying on how to make the tableview cell with databinding.
     func updateDataSource(){
         
-        for items in  self.candidateViewModel.canidateData.data{
-            self.tempDict.append(CandidateData(firstName: items.firstName, lastName: items.lastName, gender: items.gender, profileImage: items.profileImage, age: items.age, jobData: items.jobData, educationData: items.educationData))
-            
-            let firstName = items.firstName ?? ""
-            let lastName = items.lastName ?? ""
-            
-            self.data.append(canidateSections(title: firstName + " " + lastName,items : self.tempDict))
-            tempDict.removeAll()
-            
-        }
-        
+        self.data = candidateViewModel.candidateSections
+    
         self.refreshControl.endRefreshing()
         self.candidateTableView.isUserInteractionEnabled = true
         self.candidateTableView.dataSource = self
@@ -115,6 +121,7 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, Collapsib
         if(data.count == 0){
        return 0
         }else{
+
             return data[section].collapsed ? 0 : data[section].items.count
         }
     }
@@ -141,28 +148,23 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, Collapsib
         cell.profileImage.sd_setImage(with: URL(string:  dict.profileImage! ), placeholderImage: UIImage(named: "placeholder.png"))  
         cell.candidateAge.text = "\(dict.age ?? 0)" + " " + "years old"
         cell.candidateGender.text = dict.gender ?? "Not mentioned"
+        cell.moreDetailsArray = dict
+        cell.delegate = self
+        cell.dataCount = data.count
+        cell.updateUI()
         return cell
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dict : CandidateData = data[indexPath.section].items[indexPath.row]
-        let view : SeeMoreViewController = self.storyboard?.instantiateViewController(withIdentifier: "seemore") as! SeeMoreViewController
-        #if DEBUG
-        print(dict)
-        #endif
-        view.moreDetailsArray = dict
-        self.navigationController?.pushViewController(view, animated: true)
-    }
-    
-    
-    
+
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
         let collapsed = !data[section].collapsed
         // Toggle collapse
         data[section].collapsed = collapsed
         // Reload the whole section
+     sectionrefresh = section
          candidateTableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
+       
     }
 }
 

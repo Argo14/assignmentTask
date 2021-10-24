@@ -16,18 +16,30 @@ protocol BackOnlineDelegate{
     func backOnline()
 }
 
+
 class CandidateViewModel: NSObject {
     
+    var bindCandidateViewModelToController : (() -> ()) = {}
+    var bindCandidateViewModelToTableViewCell : (() -> ()) = {}
     var tempDict : [CandidateData] = []
-    var canidateData : Candidates!{
+    var data : [canidateSections] = []
+    var moreTempDict : [JobData] = []
+    var moreData : [jobSections] = []
+    var delegate : StopRefreshDelegate!
+    var onlineDelegate : BackOnlineDelegate!
+    var candidateData : Candidates!
+    
+    var candidateSections : [canidateSections]!{
         didSet {
             self.bindCandidateViewModelToController()
         }
     }
-    var delegate : StopRefreshDelegate!
-    var onlineDelegate : BackOnlineDelegate!
     
-    var bindCandidateViewModelToController : (() -> ()) = {}
+    var moreDetailsSections : [jobSections]!{
+        didSet{
+            self.bindCandidateViewModelToTableViewCell()
+        }
+    }
     
     override init() {
         super.init()
@@ -37,7 +49,20 @@ class CandidateViewModel: NSObject {
     func getCandidateData(){
         
         AFWrapper.requestGETNew(methodName: "getAllDetails", success: { (response) in
-            self.canidateData = response
+            self.candidateData = response
+            for items in  response.data{
+                self.tempDict.append(CandidateData(firstName: items.firstName, lastName: items.lastName, gender: items.gender, profileImage: items.profileImage, age: items.age, jobData: items.jobData, educationData: items.educationData))
+                
+                let firstName = items.firstName ?? ""
+                let lastName = items.lastName ?? ""
+                
+                self.data.append(canidateSections(title: firstName + " " + lastName,items : self.tempDict))
+                self.tempDict.removeAll()
+                
+            }
+            self.candidateSections = self.data
+            
+            
             self.onlineDelegate.backOnline()
             do{
                 _ = try SaveFile.save(response, for: "candidates")
@@ -50,7 +75,18 @@ class CandidateViewModel: NSObject {
             
         }, failure: {(response) in
             do{
-                self.canidateData = try SaveFile.loadJSON(withFilename: "candidates")
+                let dataFile = try SaveFile.loadJSON(withFilename: "candidates")
+                for items in dataFile!.data{
+                    self.tempDict.append(CandidateData(firstName: items.firstName, lastName: items.lastName, gender: items.gender, profileImage: items.profileImage, age: items.age, jobData: items.jobData, educationData: items.educationData))
+                    
+                    let firstName = items.firstName ?? ""
+                    let lastName = items.lastName ?? ""
+                    
+                    self.data.append(canidateSections(title: firstName + " " + lastName,items : self.tempDict))
+                    self.tempDict.removeAll()
+                    
+                }
+                self.candidateSections = self.data
                 self.delegate.stopRefresh(response.localizedDescription)
             }catch{
                 
@@ -59,4 +95,22 @@ class CandidateViewModel: NSObject {
         })
     }
     
+     func getData( moredata : CandidateData, moreData : @escaping ([jobSections]) -> Void) {
+    
+        self.moreData.removeAll()
+        for items in moredata.jobData{
+            self.moreTempDict.append(JobData(role: items.role, organization: items.organization, exp: items.exp))
+        }
+        self.moreData.append(jobSections(title: "Experience", items: self.moreTempDict))
+        self.moreTempDict.removeAll()
+        
+        for items in moredata.educationData{
+            self.moreTempDict.append(JobData(role: items.degree, organization: items.institution, exp: 0))
+        }
+        self.moreData.append(jobSections(title: "Education", items: self.moreTempDict))
+        self.tempDict.removeAll()
+    }
+    
+    
+   
 }

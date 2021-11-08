@@ -8,16 +8,12 @@
 import UIKit
 import SDWebImage
 
-//MARK:-  Studying on making the tableview cell with databinding.
-
 protocol UpdateTableView {
     func updateTableViewHeight()
 }
 
 class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource, CollapsibleTableViewHeaderDelegate{
 
-    
-   
     @IBOutlet weak var profileImage: UIImageView!
     
     @IBOutlet weak var candidateName: UILabel!
@@ -38,7 +34,7 @@ class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+      
         experienceTableView.estimatedRowHeight = 100
         experienceTableView.rowHeight = UITableView.automaticDimension
       
@@ -50,31 +46,14 @@ class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource
      }
     
     func updateUI(){
-        self.data.removeAll()
-        for items in moreDetailsArray.jobData{
-            self.tempDict.append(JobData(role: items.role, organization: items.organization, exp: items.exp))
-        }
-        self.data.append(jobSections(title: "Experience", items: self.tempDict))
-        self.tempDict.removeAll()
-
-        for items in moreDetailsArray.educationData{
-            self.tempDict.append(JobData(role: items.degree, organization: items.institution, exp: 0))
-        }
-        self.data.append(jobSections(title: "Education", items: self.tempDict))
-        self.tempDict.removeAll()
-        
-     
             self.experienceTableView.delegate = self
             self.experienceTableView.dataSource = self
+            if #available(iOS 15.0, *) {
+                experienceTableView.sectionHeaderTopPadding = 0
+            }
             self.experienceTableView.reloadData()
-            
-    
-        
-        
 
     }
- 
-
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -135,20 +114,12 @@ class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource
     
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
         let collapsed = !data[section].collapsed
-        
         // Toggle collapse
         data[section].collapsed = collapsed
-
         // Reload the whole section
         
          experienceTableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
-       
         self.delegate.updateTableViewHeight()
-        
-       
-        
     }
-    
-
 }
 

@@ -20,7 +20,6 @@ protocol BackOnlineDelegate{
 class CandidateViewModel: NSObject {
     
     var bindCandidateViewModelToController : (() -> ()) = {}
-    var bindCandidateViewModelToTableViewCell : (() -> ()) = {}
     var tempDict : [CandidateData] = []
     var data : [canidateSections] = []
     var moreTempDict : [JobData] = []
@@ -32,12 +31,6 @@ class CandidateViewModel: NSObject {
     var candidateSections : [canidateSections]!{
         didSet {
             self.bindCandidateViewModelToController()
-        }
-    }
-    
-    var moreDetailsSections : [jobSections]!{
-        didSet{
-            self.bindCandidateViewModelToTableViewCell()
         }
     }
     
@@ -95,7 +88,7 @@ class CandidateViewModel: NSObject {
         })
     }
     
-     func getData( moredata : CandidateData, moreData : @escaping ([jobSections]) -> Void) {
+     func getData( moredata : CandidateData) -> [jobSections] {
     
         self.moreData.removeAll()
         for items in moredata.jobData{
@@ -108,9 +101,7 @@ class CandidateViewModel: NSObject {
             self.moreTempDict.append(JobData(role: items.degree, organization: items.institution, exp: 0))
         }
         self.moreData.append(jobSections(title: "Education", items: self.moreTempDict))
-        self.tempDict.removeAll()
+        self.moreTempDict.removeAll()
+         return self.moreData
     }
-    
-    
-   
 }

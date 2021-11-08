@@ -19,7 +19,6 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
     var data : [canidateSections] = []
     var tempDict : [CandidateData] = []
     var refreshControl = UIRefreshControl()
-    var sectionrefresh : Int?
    
 
     override func viewDidLoad() {
@@ -40,9 +39,6 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
     func updateTableViewHeight() {
       
         self.candidateTableView.beginUpdates()
-        if sectionrefresh != data.count - 1{
-        self.candidateTableView.reloadSections([data.count - 1], with: .automatic)
-        }
         self.candidateTableView.endUpdates()
     }
     
@@ -64,10 +60,8 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
         }
     }
     
-  
-  
     // for updating the datasource
-    // new - moved the business logic to the canididateview model and gets the data through data binding. Studying on how to make the tableview cell with databinding.
+    // new - moved the business logic to the canididateview model and gets the data through data binding. 
     func updateDataSource(){
         
         self.data = candidateViewModel.candidateSections
@@ -76,6 +70,9 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
         self.candidateTableView.isUserInteractionEnabled = true
         self.candidateTableView.dataSource = self
         self.candidateTableView.delegate = self
+        if #available(iOS 15.0, *) {
+            candidateTableView.sectionHeaderTopPadding = 0
+        }
         self.candidateTableView.reloadData()
     }
     
@@ -110,7 +107,7 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, Collapsib
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1.0
+        return .leastNormalMagnitude
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -148,21 +145,19 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, Collapsib
         cell.profileImage.sd_setImage(with: URL(string:  dict.profileImage! ), placeholderImage: UIImage(named: "placeholder.png"))  
         cell.candidateAge.text = "\(dict.age ?? 0)" + " " + "years old"
         cell.candidateGender.text = dict.gender ?? "Not mentioned"
-        cell.moreDetailsArray = dict
+        cell.data = candidateViewModel.getData(moredata:dict)
         cell.delegate = self
         cell.dataCount = data.count
         cell.updateUI()
         return cell
         
     }
-    
 
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
         let collapsed = !data[section].collapsed
         // Toggle collapse
         data[section].collapsed = collapsed
         // Reload the whole section
-     sectionrefresh = section
          candidateTableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
        
     }

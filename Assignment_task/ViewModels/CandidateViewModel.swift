@@ -87,6 +87,34 @@ class CandidateViewModel: NSObject {
                 self.delegate.stopRefresh(response.localizedDescription)
             }catch{
                 
+                // First time opening the app, this data will be shown if the app have never connected to internet before.
+                //Static data - dataresponse
+                
+                if let path = Bundle.main.path(forResource: "demoresponse", ofType: "json"){
+                    do{
+                        let jsonData = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                        let jsonResult = try JSONDecoder().decode(Candidates.self, from: jsonData)
+                        if let json = jsonResult as? Candidates{
+                            print(json.data)
+                            for items in json.data{
+                                self.tempDict.append(CandidateData(firstName: items.firstName, lastName: items.lastName, gender: items.gender, profileImage: items.profileImage, age: items.age, jobData: items.jobData, educationData: items.educationData))
+                                
+                                let firstName = items.firstName ?? ""
+                                let lastName = items.lastName ?? ""
+                                
+                                self.data.append(canidateSections(title: firstName + " " + lastName,items : self.tempDict))
+                                self.tempDict.removeAll()
+                                
+                            }
+                            self.candidateSections = self.data
+                            self.delegate.stopRefresh(response.localizedDescription)
+                        }
+                    }catch{
+                        print("no data")
+                    }
+                }else{
+                    print("wrong path")
+                }
             }
             
         })

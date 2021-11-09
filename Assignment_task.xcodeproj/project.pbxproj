@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C74177F271D4C3E00983F8B /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C74177E271D4C3E00983F8B /* SelfSizedTableView.swift */; };
+		0CA97B00273A6F2C0034B55B /* demoresponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CA97AFF273A6F2C0034B55B /* demoresponse.json */; };
 		0CE946B127019394006E021B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE946B027019394006E021B /* AppDelegate.swift */; };
 		0CE946B327019394006E021B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE946B227019394006E021B /* SceneDelegate.swift */; };
 		0CE946B527019394006E021B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE946B427019394006E021B /* ViewController.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		0C74177E271D4C3E00983F8B /* SelfSizedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
+		0CA97AFF273A6F2C0034B55B /* demoresponse.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = demoresponse.json; sourceTree = "<group>"; };
 		0CE946AD27019394006E021B /* Assignment_task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assignment_task.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE946B027019394006E021B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CE946B227019394006E021B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		0CE946A427019394006E021B = {
 			isa = PBXGroup;
 			children = (
+				0CA97AFF273A6F2C0034B55B /* demoresponse.json */,
 				0CE946AF27019394006E021B /* Assignment_task */,
 				0CE946C92701939C006E021B /* Assignment_taskTests */,
 				0CE946D42701939C006E021B /* Assignment_taskUITests */,
@@ -349,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CA97B00273A6F2C0034B55B /* demoresponse.json in Resources */,
 				0CE946C02701939B006E021B /* LaunchScreen.storyboard in Resources */,
 				0CE946BD2701939B006E021B /* Assets.xcassets in Resources */,
 				0CE946B827019394006E021B /* Main.storyboard in Resources */,

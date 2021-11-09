@@ -12,7 +12,7 @@ protocol UpdateTableView {
     func updateTableViewHeight()
 }
 
-class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource, CollapsibleTableViewHeaderDelegate{
+class TableViewCell: UITableViewCell{
 
     @IBOutlet weak var profileImage: UIImageView!
     
@@ -54,7 +54,11 @@ class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource
             self.experienceTableView.reloadData()
 
     }
-    
+}
+
+//MARK:- Table view delegate and datasource
+
+extension TableViewCell : UITableViewDelegate, UITableViewDataSource, CollapsibleTableViewHeaderDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -112,6 +116,7 @@ class TableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource
         
     }
     
+    // This delegate function is to expand and collapse a particular section.
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
         let collapsed = !data[section].collapsed
         // Toggle collapse

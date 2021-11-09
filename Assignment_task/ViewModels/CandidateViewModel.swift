@@ -27,9 +27,9 @@ class CandidateViewModel: NSObject {
     var delegate : StopRefreshDelegate!
     var onlineDelegate : BackOnlineDelegate!
     var candidateData : Candidates!
-    
     var candidateSections : [canidateSections]!{
         didSet {
+            // binding with viewcontrtoller when the candidate section is set from the api.
             self.bindCandidateViewModelToController()
         }
     }
@@ -39,6 +39,10 @@ class CandidateViewModel: NSObject {
         getCandidateData()
     }
     
+    // Api call.
+    // Save data to files in success.
+    //Retrieve data from files, incase there is no internet.
+    // Converting the data recieved from the api to candidate sections for creating the datasource with title and items associated for each title.
     func getCandidateData(){
         
         AFWrapper.requestGETNew(methodName: "getAllDetails", success: { (response) in
@@ -88,6 +92,7 @@ class CandidateViewModel: NSObject {
         })
     }
     
+    // function called to set the datasource for the job and experience section of each items.
      func getData( moredata : CandidateData) -> [jobSections] {
     
         self.moreData.removeAll()

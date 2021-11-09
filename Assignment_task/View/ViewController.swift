@@ -36,6 +36,8 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
         
     }
     
+    // This delegate is for updating the tableview for expanding the candidate tablewview section
+    // when the nested experience tableview expands and collapses.
     func updateTableViewHeight() {
       
         self.candidateTableView.beginUpdates()
@@ -61,7 +63,7 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
     }
     
     // for updating the datasource
-    // new - moved the business logic to the canididateview model and gets the data through data binding. 
+    // new - moved the business logic to the candidateview model and gets the data through data binding. 
     func updateDataSource(){
         
         self.data = candidateViewModel.candidateSections
@@ -96,6 +98,7 @@ class ViewController: UIViewController, StopRefreshDelegate, BackOnlineDelegate,
     }
 }
 
+//MARK:- Tableview delegate and datasource.
 extension ViewController : UITableViewDelegate, UITableViewDataSource, CollapsibleTableViewHeaderDelegate{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -153,6 +156,7 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource, Collapsib
         
     }
 
+    // This delegate function is to expand and collapse a particular section.
     func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
         let collapsed = !data[section].collapsed
         // Toggle collapse

@@ -54,7 +54,7 @@ struct EducationData : Codable{
     }
 }
 
-//MARK:- For candidate sections
+//MARK:- For candidate sections 
 public struct canidateSections {
     var title : String
     var items : [CandidateData]

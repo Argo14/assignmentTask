@@ -10,12 +10,9 @@ import UIKit
 
 import Alamofire
 
-
-
-
 class AFWrapper: NSObject {
     
-
+// API to get the candidate list.
     class func requestGETNew(methodName:String,success:@escaping (Candidates) -> Void, failure:@escaping (Error) -> Void) {
         
         print(APPURL.BaseURL + methodName )

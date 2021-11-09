@@ -10,8 +10,7 @@ import UIKit
 
 class Common : UIViewController{
     
-    
-
+// To show alert
 class func showAlert(title: String, message: String){
   
     let commonAlert = UIAlertController(title:title, message:message, preferredStyle:.alert)
@@ -20,7 +19,7 @@ class func showAlert(title: String, message: String){
 
      UIApplication.shared.keyWindow?.rootViewController?.present(commonAlert, animated: true, completion: nil)
 }
-    
+   // To show alert for particular view controller
     class func showAlertViewController(title: String, message: String, viewController : UIViewController, success :@escaping(String) -> Void ){
         let commonAlert = UIAlertController(title:title, message:message, preferredStyle:.alert)
         let okAction = UIAlertAction(title:"OK", style: .cancel)
@@ -30,6 +29,7 @@ class func showAlert(title: String, message: String){
     }
 }
 
+// Extension to enable view inspectors in storyboard like corner rarius, borderwidth, border color and so on.
 extension UIView {
 
     @IBInspectable

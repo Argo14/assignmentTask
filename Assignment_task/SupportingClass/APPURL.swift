@@ -4,7 +4,8 @@
 //
 //  Created by Arjun Gopakumar on 05/12/18.
 //
-//
+//Common calling point for the different urls that will be used.
+
 
 import Foundation
 struct APPURL {

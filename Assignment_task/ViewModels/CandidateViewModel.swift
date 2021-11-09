@@ -7,6 +7,7 @@
 
 import UIKit
 import Foundation
+import Alamofire
 
 protocol StopRefreshDelegate{
     func stopRefresh(_ errorResponse : String)

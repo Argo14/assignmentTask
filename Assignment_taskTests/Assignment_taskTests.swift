@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Alamofire
 @testable import Assignment_task
 
 class Assignment_taskTests: XCTestCase {
@@ -33,7 +34,10 @@ class Assignment_taskTests: XCTestCase {
     }
     
     func testCandidateAPI() throws{
-        
+        try XCTSkipUnless(
+            Connectivity.isConnectedToInternet == true,
+          "Network connectivity needed for this test.")
+
        
         
         let testApi = expectation(description: "Got the data sucessfully")
@@ -90,7 +94,10 @@ class Assignment_taskTests: XCTestCase {
     }
     
     func testCandidateAPIWithoutConnection() throws{
-     
+        try XCTSkipUnless(
+            Connectivity.isConnectedToInternet == false,
+          "Network connectivity is not needed for this test.")
+
         let testApi = expectation(description: "Saved to file")
         AFWrapper.requestGETNew(methodName: "getAllDetails", success: { (response) in
             self.candidateData = response

@@ -14,8 +14,8 @@
             filePath = "Assignment_taskTests/Assignment_taskTests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "testCandidateAPIWithoutConnection()"
             landmarkType = "7">
          </BreakpointContent>
